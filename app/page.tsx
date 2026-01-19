@@ -47,7 +47,7 @@ const FriendsLeaderboard = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <img 
-              src="/logo.png" // place your Canva logo in public folder
+              src="/logo.png" 
               alt="CheckmateHQ Logo" 
               className="w-12 h-12 md:w-16 md:h-16 object-contain"
             />
