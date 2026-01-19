@@ -1,95 +1,93 @@
 import React from 'react';
-import { Trophy, Medal, Crown, ChevronUp, ChevronDown } from 'lucide-react';
+import { Trophy, Flame, ChevronRight, User } from 'lucide-react';
 
-const Leaderboard = () => {
-  const players = [
-    { rank: 1, name: "Magnus Carlsen", rating: 2853, change: 12, title: "GM" },
-    { rank: 2, name: "Hikaru Nakamura", rating: 2802, change: -5, title: "GM" },
-    { rank: 3, name: "Fabiano Caruana", rating: 2795, change: 8, title: "GM" },
-    { rank: 4, name: "Alireza Firouzja", rating: 2770, change: 2, title: "GM" },
-    { rank: 5, name: "Ian Nepomniachtchi", rating: 2758, change: -3, title: "GM" },
+const FriendsLeaderboard = () => {
+  const friends = [
+    { rank: 1, name: "Alex", rating: 1420, wins: 24, losses: 12, streak: 3, isHot: true },
+    { rank: 2, name: "Jordan", rating: 1385, wins: 20, losses: 15, streak: 1, isHot: false },
+    { rank: 3, name: "Sam", rating: 1210, wins: 15, losses: 18, streak: 0, isHot: false },
+    { rank: 4, name: "Chris", rating: 950, wins: 8, losses: 22, streak: 0, isHot: false },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-slate-100 p-8 font-sans">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-neutral-950 text-white p-4 md:p-10 font-sans">
+      <div className="max-w-2xl mx-auto">
         
-        {/* Header Section */}
-        <div className="flex justify-between items-end mb-12">
+        {/* Compact Header */}
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-amber-200 to-yellow-500 bg-clip-text text-transparent">
-              Global Rankings
-            </h1>
-            <p className="text-slate-400 mt-2">The world's elite chess masters</p>
+            <h1 className="text-2xl md:text-3xl font-black italic tracking-tighter">THE GAUNTLET</h1>
+            <p className="text-neutral-500 text-sm">Our Private Elo Rankings</p>
           </div>
-          <div className="text-right text-xs text-slate-500 uppercase tracking-widest">
-            Updated: Jan 2026
+          <div className="bg-neutral-900 px-4 py-2 rounded-full border border-neutral-800 text-xs font-bold text-neutral-400">
+            {friends.length} PLAYERS
           </div>
         </div>
 
-        {/* Podium / Top 3 (Visual Highlight) */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          {players.slice(0, 3).map((player, idx) => (
-            <div key={player.rank} className={`relative p-6 rounded-2xl border flex flex-col items-center ${
-              idx === 0 ? 'bg-amber-500/10 border-amber-500/50 scale-105 z-10' : 'bg-slate-900/50 border-slate-800'
-            }`}>
-              {idx === 0 && <Crown className="text-amber-500 mb-2" size={32} />}
-              <span className="text-xs font-bold text-amber-500 mb-1">{player.title}</span>
-              <h3 className="font-semibold text-lg">{player.name.split(' ')[1]}</h3>
-              <p className="text-2xl font-mono font-bold mt-2">{player.rating}</p>
+        {/* Responsive List */}
+        <div className="space-y-3">
+          {friends.map((friend) => (
+            <div 
+              key={friend.rank}
+              className="relative overflow-hidden group bg-neutral-900/50 border border-neutral-800 rounded-2xl p-4 transition-all hover:border-neutral-600 hover:bg-neutral-900"
+            >
+              <div className="flex items-center justify-between">
+                
+                {/* Left Side: Rank & Info */}
+                <div className="flex items-center gap-4">
+                  <div className={`text-xl font-black w-8 ${
+                    friend.rank === 1 ? 'text-yellow-500' : 'text-neutral-600'
+                  }`}>
+                    {friend.rank.toString().padStart(2, '0')}
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center border border-neutral-700">
+                      {friend.rank === 1 ? <Trophy size={18} className="text-yellow-500" /> : <User size={18} className="text-neutral-500" />}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-lg">{friend.name}</span>
+                        {friend.isHot && <Flame size={16} className="text-orange-500 animate-pulse" />}
+                      </div>
+                      <div className="text-xs text-neutral-500 flex gap-2">
+                        <span>{friend.wins}W</span>
+                        <span>{friend.losses}L</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Side: Rating */}
+                <div className="flex items-center gap-4 text-right">
+                  <div>
+                    <div className="text-xl font-mono font-black text-emerald-400">
+                      {friend.rating}
+                    </div>
+                    <div className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">
+                      ELO RATING
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-neutral-700 group-hover:text-neutral-400 transition-colors" />
+                </div>
+
+              </div>
+              
+              {/* Subtle background glow for Rank 1 */}
+              {friend.rank === 1 && (
+                <div className="absolute inset-0 bg-yellow-500/5 pointer-events-none" />
+              )}
             </div>
           ))}
         </div>
 
-        {/* The List */}
-        <div className="bg-slate-900/40 border border-slate-800 rounded-3xl overflow-hidden backdrop-blur-md">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-slate-800 text-slate-500 text-sm uppercase">
-                <th className="px-6 py-4 font-medium">Rank</th>
-                <th className="px-6 py-4 font-medium">Player</th>
-                <th className="px-6 py-4 font-medium text-right">Rating</th>
-                <th className="px-6 py-4 font-medium text-right">Change</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800/50">
-              {players.map((player) => (
-                <tr key={player.rank} className="group hover:bg-white/5 transition-colors cursor-pointer">
-                  <td className="px-6 py-4">
-                    <span className={`w-8 h-8 flex items-center justify-center rounded-full font-mono ${
-                      player.rank <= 3 ? 'text-amber-400' : 'text-slate-500'
-                    }`}>
-                      #{player.rank}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-lg" />
-                      <div>
-                        <div className="font-semibold flex items-center gap-2">
-                          {player.name}
-                          <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-400">{player.title}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-right font-mono font-bold text-lg">
-                    {player.rating}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className={`flex items-center justify-end gap-1 ${player.change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                      {player.change >= 0 ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                      <span className="font-mono">{Math.abs(player.change)}</span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {/* Quick Action Button for Mobile */}
+        <button className="fixed bottom-6 right-6 bg-white text-black px-6 py-3 rounded-full font-bold shadow-2xl flex items-center gap-2 hover:scale-105 transition-transform active:scale-95">
+          <span>Add Match</span>
+        </button>
       </div>
     </div>
   );
 };
 
-export default Leaderboard;
+export default FriendsLeaderboard;
