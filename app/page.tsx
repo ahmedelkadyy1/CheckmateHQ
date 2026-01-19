@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { Trophy, Crown, Flame, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
